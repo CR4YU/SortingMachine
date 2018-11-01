@@ -13,5 +13,11 @@ class IntArrayGenerator implements Generator {
     Comparable[] generate(int size) {
         def array = []
         (1..size).each {array << rand.nextInt(MAX)}
+        return array
+    }
+
+    @Override
+    String type() {
+        "int"
     }
 }
