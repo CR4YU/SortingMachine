@@ -1,7 +1,7 @@
-package com.crayu.sorting
+package com.crayu.sortingmachine
 
-import com.crayu.sorting.utils.DoubleArrayGenerator
-import com.crayu.sorting.utils.IntArrayGenerator
+import com.crayu.sortingmachine.utils.DoubleArrayGenerator
+import com.crayu.sortingmachine.utils.IntArrayGenerator
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -13,7 +13,7 @@ class SortingAlgorithmTest extends Specification {
 
 
     @Unroll
-    def "Should properly sort #generator.type() array with size #size using algorithm #algorithm"() {
+    def "Sort #generator.type() array with size #size using algorithm #algorithm.shortName()"() {
         setup:
         SortingService.setSortingAlgorithm(algorithm)
         Comparable[] array = generator.generate(size)
@@ -58,9 +58,9 @@ class SortingAlgorithmTest extends Specification {
     }
 
     static class TestParametersGenerator {
-        private final def ALGORITHMS = [new ForkJoinMergeSort()]
+        private final def ALGORITHMS = [new ForkJoinMergeSort(), new InsertionSort()]
         private final def GENERATORS = [new IntArrayGenerator(), new DoubleArrayGenerator()]
-        private final def SIZES = [0, 1, 3, 10, 40, 100, 150, 1000, 4000, 10000, 100000, 500000, 1000000]
+        private final def SIZES = [0, 1, 3, 10, 40, 100, 150, 1000, 4000, 10000, 100000]
 
         def algorithms = []
         def generators = []
