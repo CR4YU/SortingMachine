@@ -1,4 +1,4 @@
-package com.crayu.sorting;
+package com.crayu.sortingmachine;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
@@ -62,7 +62,7 @@ public class ForkJoinMergeSort extends RecursiveAction implements SortingAlgorit
     }
 
     @Override
-    public String toString() {
-        return "ForkJoinMergeSort";
+    public String shortName() {
+        return "Fork Join Merge Sort";
     }
 }

@@ -1,4 +1,4 @@
-package com.crayu.sorting;
+package com.crayu.sortingmachine;
 
 public class SortingService{
 
