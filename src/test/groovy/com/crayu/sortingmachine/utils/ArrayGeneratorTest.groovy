@@ -31,4 +31,18 @@ class ArrayGeneratorTest extends Specification {
         array.length == 0 || array.every{o -> o.class == type}
     }
 
+    def "Should throw exception when negative size" () {
+        when:
+        generator.generate(size)
+
+        then:
+        thrown IllegalArgumentException
+
+        where:
+        generator                  | size
+        new IntArrayGenerator()    | -1
+        new DoubleArrayGenerator() | -50
+        new StringArrayGenerator() | -200
+    }
+
 }
