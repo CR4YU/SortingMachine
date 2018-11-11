@@ -2,7 +2,7 @@ package com.crayu.sortingmachine.utils;
 
 import java.util.Random;
 
-public class IntArrayGenerator implements Generator {
+public class IntArrayGenerator extends ArrayGenerator {
 
     private final int MAX = Integer.MAX_VALUE;
     private Random rand;
@@ -12,12 +12,8 @@ public class IntArrayGenerator implements Generator {
     }
 
     @Override
-    public Comparable[] generate(int size) {
-        Comparable[] result = new Comparable[size];
-        while (size-- > 0) {
-            result[size] = rand.nextInt(MAX);
-        }
-        return result;
+    Comparable next() {
+        return rand.nextInt(MAX);
     }
 
     @Override
