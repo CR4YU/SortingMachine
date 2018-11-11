@@ -5,10 +5,7 @@ import com.crayu.sortingmachine.SortingService;
 import com.crayu.sortingmachine.utils.ArrayGenerator;
 import com.crayu.sortingmachine.utils.IntArrayGenerator;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 
 public final class Statistics {
 
@@ -98,6 +95,18 @@ public final class Statistics {
 
         public Builder addSortingAlgorithm(SortingAlgorithm algorithm) {
             sortingTimes.put(algorithm, new TreeMap<>());
+            return this;
+        }
+
+        public Builder addSortingAlgorithms(SortingAlgorithm[] algorithms) {
+            for(SortingAlgorithm a : algorithms) {
+                sortingTimes.put(a, new TreeMap<>());
+            }
+            return this;
+        }
+
+        public Builder addSortingAlgorithms(List<SortingAlgorithm> algorithms) {
+            algorithms.forEach(a -> sortingTimes.put(a, new TreeMap<>()));
             return this;
         }
 
