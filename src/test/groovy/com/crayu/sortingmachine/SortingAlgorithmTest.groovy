@@ -2,6 +2,7 @@ package com.crayu.sortingmachine
 
 import com.crayu.sortingmachine.utils.DoubleArrayGenerator
 import com.crayu.sortingmachine.utils.IntArrayGenerator
+import com.crayu.sortingmachine.utils.StringArrayGenerator
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -9,11 +10,11 @@ import spock.lang.Unroll
 class SortingAlgorithmTest extends Specification {
 
     @Shared
-    TestParametersGenerator parametersGenerator = new TestParametersGenerator()
+    TestParameters parameters = new TestParameters()
 
 
     @Unroll
-    def "Sort #generator.type() array with size #size using algorithm #algorithm.shortName()"() {
+    def "Sort #generator.type() array with size #size using algorithm #algorithm.name()"() {
         setup:
         SortingService.setSortingAlgorithm(algorithm)
         Comparable[] array = generator.generate(size)
@@ -25,9 +26,9 @@ class SortingAlgorithmTest extends Specification {
         sortedAscending(array)
 
         where:
-        algorithm << parametersGenerator.algorithms
-        generator << parametersGenerator.generators
-        size      << parametersGenerator.sizes
+        algorithm << parameters.algorithms
+        generator << parameters.generators
+        size      << parameters.sizes
     }
 
     @Unroll
@@ -57,16 +58,16 @@ class SortingAlgorithmTest extends Specification {
         array.size() < 2 || (1..array.size()-1).every{ (array[it - 1] <=> array[it]) < 1 }
     }
 
-    static class TestParametersGenerator {
-        private final def ALGORITHMS = [new ForkJoinMergeSort(), new InsertionSort()]
-        private final def GENERATORS = [new IntArrayGenerator(), new DoubleArrayGenerator()]
-        private final def SIZES = [0, 1, 3, 10, 40, 100, 150, 1000, 4000, 10000, 100000]
+    private static class TestParameters {
+        private final def ALGORITHMS = [new ForkJoinMergeSort(), new InsertionSort(), new ArraysSort()]
+        private final def GENERATORS = [new IntArrayGenerator(), new DoubleArrayGenerator(), new StringArrayGenerator()]
+        private final def SIZES = [0, 1, 3, 10, 40, 100, 150, 1000, 4000, 10000]
 
         def algorithms = []
         def generators = []
         def sizes = []
 
-        TestParametersGenerator() {
+        TestParameters() {
             initParameters()
         }
 
