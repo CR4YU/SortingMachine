@@ -3,7 +3,6 @@ package com.crayu.sortingmachine.statistics
 import com.crayu.sortingmachine.ArraysSort
 import com.crayu.sortingmachine.ForkJoinMergeSort
 import com.crayu.sortingmachine.InsertionSort
-import com.crayu.sortingmachine.SortingAlgorithm
 import com.crayu.sortingmachine.utils.DoubleArrayGenerator
 import com.crayu.sortingmachine.utils.IntArrayGenerator
 import com.crayu.sortingmachine.utils.StringArrayGenerator
@@ -25,7 +24,7 @@ class StatisticsTest extends Specification {
             .build()
 
         when:
-        Map<SortingAlgorithm, Map<Integer, Long>> st = statistics.getStatistics()
+        def st = statistics.getStatistics()
 
         then:
         st.size() == algorithms.size()
