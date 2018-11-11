@@ -62,7 +62,7 @@ public class ForkJoinMergeSort extends RecursiveAction implements SortingAlgorit
     }
 
     @Override
-    public String shortName() {
+    public String name() {
         return "Fork Join Merge Sort";
     }
 }

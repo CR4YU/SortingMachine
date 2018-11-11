@@ -22,7 +22,7 @@ public class InsertionSort implements SortingAlgorithm {
     }
 
     @Override
-    public String shortName() {
+    public String name() {
         return "Insertion Sort";
     }
 }
