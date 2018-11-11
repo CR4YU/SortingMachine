@@ -3,5 +3,5 @@ package com.crayu.sortingmachine;
 public interface SortingAlgorithm {
 
     void sort(Comparable[] array);
-    String shortName();
+    String name();
 }
