@@ -2,7 +2,7 @@ package com.crayu.sortingmachine.utils
 
 import spock.lang.Specification
 
-class GeneratorTest extends Specification {
+class ArrayGeneratorTest extends Specification {
 
 
     def "Should properly generate array with correct type" () {
