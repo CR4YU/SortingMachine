@@ -1,0 +1,17 @@
+.button {
+    -fx-background-color: #009400;
+    -fx-text-fill: white;
+    -fx-background-radius: 0px;
+}
+
+.check-box {
+    -fx-background-radius: 0px;
+}
+
+.text-field {
+    -fx-background-radius: 0px;
+}
+
+#algorithmsVBox {
+    -fx-padding: 10px;
+}

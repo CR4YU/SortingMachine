@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.chart.LineChart?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.crayu.ui.controller.ChartUIController"
+          prefHeight="800.0" prefWidth="1200.0"
+          fx:id="mainGridPane">
+
+<VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="20">
+    <VBox fx:id="algorithmsVBox" spacing="5">
+
+    </VBox>
+
+    <VBox><Label text="Initial size"/><TextField fx:id="initialSizeTextField"/></VBox>
+    <VBox><Label text="Max size"/><TextField fx:id="maxSizeTextField"/></VBox>
+    <VBox><Label text="Size gap"/><TextField fx:id="sizeGapTextField"/></VBox>
+    <VBox><Label text="Repeat count"/><TextField fx:id="repeatCountTextField"/></VBox>
+    <Button text="Generate" onAction="#generateButtonHandler"/>
+
+
+
+
+
+</VBox>
+
+
+</GridPane>
