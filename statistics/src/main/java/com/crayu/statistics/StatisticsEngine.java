@@ -1,14 +1,15 @@
-package com.crayu.sortingmachine.statistics;
+package com.crayu.statistics;
 
-import com.crayu.sortingmachine.SortingAlgorithm;
-import com.crayu.sortingmachine.SortingService;
-import com.crayu.sortingmachine.utils.ArrayGenerator;
-import com.crayu.sortingmachine.utils.IntArrayGenerator;
+import com.crayu.generator.ArrayGenerator;
+import com.crayu.generator.IntArrayGenerator;
+import com.crayu.sorting.SortingAlgorithm;
+import com.crayu.sorting.SortingService;
 
 import java.util.*;
 
-public final class Statistics {
+public final class StatisticsEngine {
 
+    private final SortingService sortingService;
     private final Map<SortingAlgorithm, Map<Integer, Long>> avgSortingTimes;
     private final ArrayGenerator arrayGenerator;
     private final int sizeGap;
@@ -16,7 +17,8 @@ public final class Statistics {
     private final int maxSize;
     private final int repeatCount;
 
-    private Statistics(Builder builder) {
+    private StatisticsEngine(Builder builder) {
+        sortingService = new SortingService();
         avgSortingTimes = builder.sortingTimes;
         arrayGenerator = builder.arrayGenerator;
         sizeGap = builder.sizeGap;
@@ -29,7 +31,7 @@ public final class Statistics {
 
     private void generateStatistics() {
         avgSortingTimes.forEach((k, v) -> {
-            SortingService.setSortingAlgorithm(k);
+            sortingService.setSortingAlgorithm(k);
 
             int size = initialSize;
             while (size <= maxSize) {
@@ -43,7 +45,7 @@ public final class Statistics {
     private long avgSortTimeForSize(int size) {
         long sum = 0;
         for(int i = 0; i < repeatCount; i++) {
-            sum += SortingService.sortAndGetTimeMillis(arrayGenerator.generate(size));
+            sum += sortingService.sortAndGetTimeMillis(arrayGenerator.generate(size));
         }
         return sum / repeatCount;
     }
@@ -70,25 +72,25 @@ public final class Statistics {
         }
 
         public Builder sizeGap(int sizeGap) {
-            if(sizeGap < 1) throw new IllegalArgumentException();
+            if (sizeGap < 1) throw new IllegalArgumentException();
             this.sizeGap = sizeGap;
             return this;
         }
 
         public Builder initialSize(int initialSize) {
-            if(initialSize < 0) throw new IllegalArgumentException();
+            if (initialSize < 0) throw new IllegalArgumentException();
             this.initialSize = initialSize;
             return this;
         }
 
         public Builder maxSize(int maxSize) {
-            if(maxSize < 0) throw new IllegalArgumentException();
+            if (maxSize < 0) throw new IllegalArgumentException();
             this.maxSize = maxSize;
             return this;
         }
 
         public Builder repeatCount(int repeatCount) {
-            if(repeatCount < 1) throw new IllegalArgumentException();
+            if (repeatCount < 1) throw new IllegalArgumentException();
             this.repeatCount = repeatCount;
             return this;
         }
@@ -99,7 +101,7 @@ public final class Statistics {
         }
 
         public Builder addSortingAlgorithms(SortingAlgorithm[] algorithms) {
-            for(SortingAlgorithm a : algorithms) {
+            for (SortingAlgorithm a : algorithms) {
                 sortingTimes.put(a, new TreeMap<>());
             }
             return this;
@@ -110,8 +112,8 @@ public final class Statistics {
             return this;
         }
 
-        public Statistics build() {
-            return new Statistics(this);
+        public StatisticsEngine build() {
+            return new StatisticsEngine(this);
         }
     }
 }
