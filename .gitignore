@@ -1,2 +1,4 @@
+target/
+*.iml
 .idea
-sorting-machine.iml
+dependency-reduced-pom.xml
