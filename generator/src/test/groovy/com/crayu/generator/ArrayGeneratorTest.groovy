@@ -1,4 +1,4 @@
-package com.crayu.sortingmachine.utils
+package com.crayu.generator
 
 import spock.lang.Specification
 
@@ -18,16 +18,16 @@ class ArrayGeneratorTest extends Specification {
 
         where:
         size   | generator                  | type
-        0      | new IntArrayGenerator()    | Integer.class
-        5      | new IntArrayGenerator()    | Integer.class
-        50     | new DoubleArrayGenerator() | Double.class
-        1000   | new DoubleArrayGenerator() | Double.class
-        16000  | new StringArrayGenerator() | String.class
-        100000 | new StringArrayGenerator() | String.class
+        0      | new IntArrayGenerator()    | Integer
+        5      | new IntArrayGenerator()    | Integer
+        50     | new DoubleArrayGenerator() | Double
+        1000   | new DoubleArrayGenerator() | Double
+        16000  | new StringArrayGenerator() | String
+        100000 | new StringArrayGenerator() | String
 
     }
 
-    private static boolean correctType(Comparable[] array, Class type) {
+    def correctType(Comparable[] array, Class type) {
         array.length == 0 || array.every{o -> o.class == type}
     }
 

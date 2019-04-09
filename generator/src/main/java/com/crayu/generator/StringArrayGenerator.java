@@ -1,4 +1,4 @@
-package com.crayu.sortingmachine.utils;
+package com.crayu.generator;
 
 import java.util.Random;
 
