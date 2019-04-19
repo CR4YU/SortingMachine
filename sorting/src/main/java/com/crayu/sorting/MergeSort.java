@@ -4,7 +4,7 @@ public class MergeSort implements Sorter {
 
     Comparable[] array;
 
-    public MergeSort() {
+    MergeSort() {
     }
 
     @Override

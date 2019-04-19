@@ -75,7 +75,7 @@ class SorterTest extends Specification {
 
     private static class TestParameters {
         private final List<SortingAlgorithm> ALGORITHMS =
-                [FORK_JOIN_MERGE_SORT, INSERTION_SORT, ARRAYS_SORT, BUBBLE_SORT, MERGE_SORT]
+                [FORK_JOIN_MERGE_SORT, INSERTION_SORT, ARRAYS_SORT, BUBBLE_SORT, MERGE_SORT, QUICK_SORT]
 
         private final List<ArrayGenerator> GENERATORS =
                 [new IntArrayGenerator(), new DoubleArrayGenerator(), new StringArrayGenerator()]

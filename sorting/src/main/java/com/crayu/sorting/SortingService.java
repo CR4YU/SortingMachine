@@ -18,10 +18,12 @@ public class SortingService {
     }
 
     public <T extends Comparable<? super T>> void sort(T[] array) {
+        if (array.length < 2) return;
         sorter.sort(array);
     }
 
     public <T extends Comparable<? super T>> void sort(Collection<T> collection) {
+        if (collection.size() < 2) return;
         Comparable[] array = collection.toArray(new Comparable[0]);
         sort(array);
         collection.clear();
@@ -31,6 +33,7 @@ public class SortingService {
     }
 
     public <T extends Comparable<? super T>> long sortAndGetTimeNano(T[] array) {
+        if (array.length < 2) return 0;
         long start = System.nanoTime();
         sort(array);
         long end = System.nanoTime();
@@ -38,6 +41,7 @@ public class SortingService {
     }
 
     public <T extends Comparable<? super T>> long sortAndGetTimeNano(Collection<T> collection) {
+        if (collection.size() < 2) return 0;
         Comparable[] array = collection.toArray(new Comparable[0]);
         long start = System.currentTimeMillis();
         sort(array);

@@ -8,6 +8,7 @@ public enum SortingAlgorithm {
     INSERTION_SORT(InsertionSort::new, "Insertion Sort"),
     BUBBLE_SORT(BubbleSort::new, "Bubble Sort"),
     ARRAYS_SORT(ArraysSort::new, "Arrays.sort()"),
+    QUICK_SORT(QuickSort::new, "Quick Sort"),
     MERGE_SORT(MergeSort::new, "Merge Sort");
 
     private final Supplier<Sorter> algorithm;
