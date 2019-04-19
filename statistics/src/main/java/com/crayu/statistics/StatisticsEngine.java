@@ -10,12 +10,14 @@ import java.util.*;
 public final class StatisticsEngine {
 
     private final SortingService sortingService;
-    private final Map<SortingAlgorithm, Map<Integer, Long>> avgSortingTimes;
+    private final Map<SortingAlgorithm, Map<Number, Number>> avgSortingTimes;
     private final ArrayGenerator arrayGenerator;
     private final int sizeGap;
     private final int initialSize;
     private final int maxSize;
     private final int repeatCount;
+
+    private Map<SortingAlgorithm, Map<Number, Number>> sortingTimesRegressed;
 
     private StatisticsEngine(Builder builder) {
         sortingService = new SortingService();
@@ -26,10 +28,10 @@ public final class StatisticsEngine {
         maxSize = builder.maxSize;
         repeatCount = builder.repeatCount;
 
-        generateStatistics();
+        generateSortingTimes();
     }
 
-    private void generateStatistics() {
+    private void generateSortingTimes() {
         avgSortingTimes.forEach((k, v) -> {
             sortingService.setSortingAlgorithm(k);
 
@@ -45,17 +47,36 @@ public final class StatisticsEngine {
     private long avgSortTimeForSize(int size) {
         long sum = 0;
         for(int i = 0; i < repeatCount; i++) {
-            sum += sortingService.sortAndGetTimeMillis(arrayGenerator.generate(size));
+            sum += sortingService.sortAndGetTimeNano(arrayGenerator.generate(size));
         }
         return sum / repeatCount;
     }
 
-    public Map<SortingAlgorithm, Map<Integer, Long>> getStatistics() {
+    public Map<SortingAlgorithm, Map<Number, Number>> getSortingTimes() {
         return avgSortingTimes;
     }
 
+    public Map<SortingAlgorithm, Map<Number, Number>> getSortingTimesRegressed() {
+        if (sortingTimesRegressed == null) {
+            sortingTimesRegressed = new HashMap<>();
+            avgSortingTimes.forEach((k, v) -> {
+                sortingTimesRegressed.put(k, regress(v));
+            });
+        }
+        return sortingTimesRegressed;
+    }
+
+    private Map<Number, Number> regress(final Map<Number, Number> data) {
+        Regression regression = new Regression(data);
+        Map<Number, Number> result = new HashMap<>();
+        data.keySet().forEach( x -> {
+            result.put(x, regression.predict(x.doubleValue()));
+        });
+        return result;
+    }
+
     public static class Builder {
-        private Map<SortingAlgorithm, Map<Integer, Long>> sortingTimes;
+        private Map<SortingAlgorithm, Map<Number, Number>> sortingTimes;
         private ArrayGenerator arrayGenerator = new IntArrayGenerator();
         private int sizeGap = 1;
         private int initialSize = 0;

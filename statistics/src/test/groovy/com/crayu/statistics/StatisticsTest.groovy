@@ -25,7 +25,7 @@ class StatisticsTest extends Specification {
             .build()
 
         when:
-        def stats = statistics.getStatistics()
+        def stats = statistics.getSortingTimes()
 
         then:
         stats.size() == algorithms.size()
