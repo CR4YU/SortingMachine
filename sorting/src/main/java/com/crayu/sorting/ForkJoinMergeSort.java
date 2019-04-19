@@ -20,9 +20,9 @@ class ForkJoinMergeSort extends RecursiveAction implements Sorter {
 
     @Override
     public void sort(Comparable[] array) {
-        ForkJoinPool pool = new ForkJoinPool();
-        ForkJoinMergeSort sort = new ForkJoinMergeSort(array, 0, array.length - 1);
-        pool.invoke(sort);
+        ForkJoinPool pool = ForkJoinPool.commonPool();
+        ForkJoinMergeSort fjms = new ForkJoinMergeSort(array, 0, array.length - 1);
+        pool.invoke(fjms);
     }
 
     @Override
@@ -31,7 +31,7 @@ class ForkJoinMergeSort extends RecursiveAction implements Sorter {
     }
 
     private void mergeSort() {
-        if(start < end) {
+        if (start < end) {
             int mid = start + (end - start) / 2;
             ForkJoinMergeSort left = new ForkJoinMergeSort(array, start, mid);
             ForkJoinMergeSort right = new ForkJoinMergeSort(array, mid + 1, end);

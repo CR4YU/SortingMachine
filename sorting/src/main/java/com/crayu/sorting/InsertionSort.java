@@ -13,7 +13,7 @@ class InsertionSort implements Sorter {
 
     private void insertionSort(Comparable[] array) {
         int n = array.length;
-        for(int i = 1; i < n; ++i) {
+        for (int i = 1; i < n; ++i) {
             Comparable key = array[i];
             int j = i-1;
 

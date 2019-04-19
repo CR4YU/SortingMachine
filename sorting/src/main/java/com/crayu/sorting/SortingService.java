@@ -30,14 +30,14 @@ public class SortingService {
         }
     }
 
-    public <T extends Comparable<? super T>> long sortAndGetTimeMillis(T[] array) {
-        long start = System.currentTimeMillis();
+    public <T extends Comparable<? super T>> long sortAndGetTimeNano(T[] array) {
+        long start = System.nanoTime();
         sort(array);
-        long end = System.currentTimeMillis();
+        long end = System.nanoTime();
         return end - start;
     }
 
-    public <T extends Comparable<? super T>> long sortAndGetTimeMillis(Collection<T> collection) {
+    public <T extends Comparable<? super T>> long sortAndGetTimeNano(Collection<T> collection) {
         Comparable[] array = collection.toArray(new Comparable[0]);
         long start = System.currentTimeMillis();
         sort(array);

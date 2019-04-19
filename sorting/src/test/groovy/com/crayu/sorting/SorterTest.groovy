@@ -12,11 +12,12 @@ import static com.crayu.sorting.SortingAlgorithm.*;
 
 class SorterTest extends Specification {
 
-    @Shared parameters = new TestParameters()
+    @Shared parameters
 
     @Shared service
 
     def setupSpec() {
+        parameters = new TestParameters()
         service = new SortingService()
     }
 
@@ -73,9 +74,14 @@ class SorterTest extends Specification {
 
 
     private static class TestParameters {
-        private final List<SortingAlgorithm> ALGORITHMS = [FORK_JOIN_MERGE_SORT, INSERTION_SORT, ARRAYS_SORT, BUBBLE_SORT]
-        private final List<ArrayGenerator> GENERATORS = [new IntArrayGenerator(), new DoubleArrayGenerator(), new StringArrayGenerator()]
-        private final List<Integer> SIZES = [0, 1, 2, 3, 10, 40, 100, 150, 1000, 4000, 10000]
+        private final List<SortingAlgorithm> ALGORITHMS =
+                [FORK_JOIN_MERGE_SORT, INSERTION_SORT, ARRAYS_SORT, BUBBLE_SORT, MERGE_SORT]
+
+        private final List<ArrayGenerator> GENERATORS =
+                [new IntArrayGenerator(), new DoubleArrayGenerator(), new StringArrayGenerator()]
+
+        private final List<Integer> SIZES =
+                [0, 1, 2, 3, 10, 40, 100, 150, 1000, 4000, 10000]
 
         private def algorithms = []
         private def generators = []
