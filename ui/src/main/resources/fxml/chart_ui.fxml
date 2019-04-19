@@ -13,22 +13,35 @@
           prefHeight="800.0" prefWidth="1200.0"
           fx:id="mainGridPane">
 
-<VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="20">
-    <VBox fx:id="algorithmsVBox" spacing="5">
+    <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="20">
+        <VBox fx:id="algorithmsVBox" spacing="5">
+        </VBox>
+
+        <VBox>
+            <Label text="Initial size"/>
+            <TextField fx:id="initialSizeTextField"/>
+        </VBox>
+        <VBox>
+            <Label text="Max size"/>
+            <TextField fx:id="maxSizeTextField"/>
+        </VBox>
+        <VBox>
+            <Label text="Size gap"/>
+            <TextField fx:id="sizeGapTextField"/>
+        </VBox>
+        <VBox>
+            <Label text="Repeat count"/>
+            <TextField fx:id="repeatCountTextField"/>
+        </VBox>
+        <HBox spacing="3">
+            <CheckBox fx:id="regressionCheckBox"/>
+            <Label text="Regression"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="Generate" onAction="#generateButtonHandler"/>
+            <ProgressIndicator fx:id="progressIndicator" visible="false" />
+        </HBox>
 
     </VBox>
-
-    <VBox><Label text="Initial size"/><TextField fx:id="initialSizeTextField"/></VBox>
-    <VBox><Label text="Max size"/><TextField fx:id="maxSizeTextField"/></VBox>
-    <VBox><Label text="Size gap"/><TextField fx:id="sizeGapTextField"/></VBox>
-    <VBox><Label text="Repeat count"/><TextField fx:id="repeatCountTextField"/></VBox>
-    <Button text="Generate" onAction="#generateButtonHandler"/>
-
-
-
-
-
-</VBox>
-
 
 </GridPane>

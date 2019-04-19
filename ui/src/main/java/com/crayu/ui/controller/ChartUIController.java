@@ -1,14 +1,14 @@
 package com.crayu.ui.controller;
 
 import com.crayu.sorting.SortingAlgorithm;
-import com.crayu.statistics.StatisticsEngine;
+import com.crayu.ui.service.SortingTimesService;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -19,37 +19,42 @@ import java.util.stream.Collectors;
 
 public class ChartUIController {
 
-    private static final String CHART_TITLE = "Sorting times";
     private static final String X_AXIS_LABEL = "Array size";
-    private static final String Y_AXIS_LABEL = "Miliseconds";
+    private static final String Y_AXIS_LABEL = "Nanoseconds";
 
-    private static final int DEFAULT_INIT_SIZE = 0;
-    private static final int DEFAULT_MAX_SIZE = 5_000;
-    private static final int DEFAULT_GAP = 500;
-    private static final int DEFAULT_REPEAT_COUNT = 1;
+    private static final int DEFAULT_INIT_SIZE = 20_000;
+    private static final int DEFAULT_MAX_SIZE = 60_000;
+    private static final int DEFAULT_GAP = 4_000;
+    private static final int DEFAULT_REPEAT_COUNT = 2;
 
-
-    @FXML
-    TextField initialSizeTextField;
 
     @FXML
-    TextField maxSizeTextField;
+    private TextField initialSizeTextField;
 
     @FXML
-    TextField sizeGapTextField;
+    private TextField maxSizeTextField;
 
     @FXML
-    TextField repeatCountTextField;
+    private TextField sizeGapTextField;
 
     @FXML
-    GridPane mainGridPane;
+    private TextField repeatCountTextField;
 
     @FXML
-    VBox algorithmsVBox;
+    private GridPane mainGridPane;
+
+    @FXML
+    private VBox algorithmsVBox;
+
+    @FXML
+    private ProgressIndicator progressIndicator;
+
+    @FXML
+    private CheckBox regressionCheckBox;
 
     private LineChart<Number,Number> lineChart;
 
-    private EnumMap<SortingAlgorithm, CheckBox> algorithmCheckBoxEnumMap;
+    private EnumMap<SortingAlgorithm,CheckBox> algorithmCheckBoxEnumMap;
 
     public void initialize() {
         algorithmCheckBoxEnumMap = new EnumMap<>(SortingAlgorithm.class);
@@ -80,38 +85,56 @@ public class ChartUIController {
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setPrefSize(900,900);
 
-        lineChart.setTitle(CHART_TITLE);
         mainGridPane.add(lineChart,0,0);
     }
 
     @FXML
     private void generateButtonHandler() {
-        clearChart();
-        StatisticsEngine statistics = buildStatistics();
-
-        statistics.getStatistics().forEach( (k, v) -> {
-            XYChart.Series<Number,Number> series = new XYChart.Series<>();
-            series.setName(k.name());
-            v.forEach((a, j) -> {
-                series.getData().add(new XYChart.Data<>(a, j));
-            });
-            lineChart.getData().add(series);
-        });
+        SortingTimesService service = sortingTimesService();
+        bindWithProgressIndicator(service);
+        service.setOnSucceeded(successEventHandler());
+        service.start();
     }
 
-    private StatisticsEngine buildStatistics() {
-        return new StatisticsEngine.Builder()
-                .initialSize(intFromTextField(initialSizeTextField))
-                .sizeGap(intFromTextField(sizeGapTextField))
-                .maxSize(intFromTextField(maxSizeTextField))
-                .repeatCount(intFromTextField(repeatCountTextField))
-                .addSortingAlgorithms(checkedSortingAlgorithms())
-                .build();
+    private void bindWithProgressIndicator(SortingTimesService service) {
+        progressIndicator.progressProperty().bind(service.progressProperty());
+        progressIndicator.visibleProperty().bind(service.runningProperty());
+    }
+
+    @SuppressWarnings("unchecked")
+    private EventHandler<WorkerStateEvent> successEventHandler() {
+        return workerStateEvent -> {
+            clearChart();
+            Object result = workerStateEvent.getSource().getValue();
+            ((Map<SortingAlgorithm, Map<Number, Number>>) result).forEach((k, v) -> {
+                var series = seriesForData(v);
+                series.setName(k.name());
+                lineChart.getData().add(series);
+            });
+        };
+    }
+
+    private XYChart.Series<Number,Number> seriesForData(Map<Number, Number> data) {
+        XYChart.Series<Number,Number> series = new XYChart.Series<>();
+        data.forEach((k, v) -> {
+            series.getData().add(new XYChart.Data<>(k, v));
+        });
+        return series;
+    }
+
+    private SortingTimesService sortingTimesService() {
+        int initialSize = intFromTextField(initialSizeTextField);
+        int sizeGap = intFromTextField(sizeGapTextField);
+        int maxSize = intFromTextField(maxSizeTextField);
+        int repeatCount = intFromTextField(repeatCountTextField);
+        boolean regression = regressionCheckBox.isSelected();
+        return new SortingTimesService(initialSize, maxSize, sizeGap, repeatCount, checkedSortingAlgorithms(), regression);
     }
 
     private List<SortingAlgorithm> checkedSortingAlgorithms() {
-        return algorithmCheckBoxEnumMap.entrySet().stream()
-                .filter(map -> map.getValue().isSelected())
+        return algorithmCheckBoxEnumMap.entrySet()
+                .stream()
+                .filter(x -> x.getValue().isSelected())
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
@@ -121,8 +144,11 @@ public class ChartUIController {
     }
 
     private int intFromTextField(TextField textField) {
-        //no need to handle exception if validation is on
-        return Integer.parseInt(textField.getText());
+        try {
+            return Integer.parseInt(textField.getText());
+        } catch (NumberFormatException e) {
+            return 1;
+        }
     }
 
     private void setValidation() {
@@ -134,7 +160,7 @@ public class ChartUIController {
 
     private void setNumericValidation(TextField textField) {
         textField.textProperty().addListener((obs, oldValue, newValue) -> {
-            if(!newValue.matches("\\d{0,9}")) textField.setText(oldValue);
+            if (!newValue.matches("\\d{0,9}")) textField.setText(oldValue);
         });
     }
 
