@@ -3,13 +3,14 @@ package com.crayu.statistics;
 import com.crayu.generator.ArrayGenerator;
 import com.crayu.generator.IntArrayGenerator;
 import com.crayu.sorting.SortingAlgorithm;
-import com.crayu.sorting.SortingService;
+import com.crayu.sorting.SortingServices;
+import com.crayu.sorting.TimedSortingService;
 
 import java.util.*;
 
 public final class StatisticsEngine {
 
-    private final SortingService sortingService;
+    private final TimedSortingService sortingService;
     private final Map<SortingAlgorithm, Map<Number, Number>> avgSortingTimes;
     private final ArrayGenerator arrayGenerator;
     private final int sizeGap;
@@ -20,7 +21,7 @@ public final class StatisticsEngine {
     private Map<SortingAlgorithm, Map<Number, Number>> sortingTimesRegressed;
 
     private StatisticsEngine(Builder builder) {
-        sortingService = new SortingService();
+        sortingService = SortingServices.timedSortingService();
         avgSortingTimes = builder.sortingTimes;
         arrayGenerator = builder.arrayGenerator;
         sizeGap = builder.sizeGap;
