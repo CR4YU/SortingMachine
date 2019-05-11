@@ -18,7 +18,7 @@ class SorterTest extends Specification {
 
     def setupSpec() {
         parameters = new TestParameters()
-        service = new SortingService()
+        service = SortingServices.basicSortingService()
     }
 
     @Unroll
