@@ -1,5 +1,5 @@
 # SortingMachine
-Multi module Maven application
+Multi module Java application for visualizing time complexity of sorting algorithms on line chart.
 
 ## Module description
 * **generator** - generates random data for given array size, returned type is some chosen implementation of `Comparable[]`
